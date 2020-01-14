@@ -1,7 +1,3 @@
-def welcome
-  # code #welcome here
-end
-
 def deal_card
   rand(1..11)
 end
