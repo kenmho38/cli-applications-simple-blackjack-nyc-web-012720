@@ -1,69 +1,78 @@
+#################
+# shared methods #
+##################
+
+def welcome
+  # code #welcome here
+end
+
 def deal_card
   rand(1..11)
 end
 
-def display_card_total(total)
-  puts "Your cards add up to #{total}"
+def display_card_total(card_total)
+  puts "Your cards add up to #{card_total}"
 end
+
+
+##########
+# rounds #
+##########
 
 def welcome
   puts "Welcome to the Blackjack Table"
 end
 
+
 def prompt_user
   puts "Type 'h' to hit or 's' to stay"
 end
 
-def initial_round
-  total = deal_card + deal_card
-  display_card_total(total)
-  total
-end
 
-def end_game(total)
-  if total > 21
-    puts "Sorry, you hit #{total}. Thanks for playing!"
-  else
-    puts "Your final score was #{total}"
-  end
+def initial_round
+  first_round = deal_card + deal_card
+  display_card_total(first_round)
+  return first_round
 end
 
 def get_user_input
-  gets.chomp
+  gets.chomp.strip
 end
 
-def hit?(total)
+def end_game(card_total)
+  puts "Sorry, you hit #{card_total}. Thanks for playing!"
+end
+
+def hit?(card_total)
   prompt_user
-  case get_user_input
-  when 'h'
-    total += deal_card
-  when 's'
-    total
-  else
+  input = get_user_input
+  until input == 'h' || input == 's'
     invalid_command
-    hit?(total)
+    prompt_user
+    input = get_user_input
+  end
+  if input == 'h'
+    card_total += deal_card
+  elsif input == 's'
+    card_total
   end
 end
 
+
 def invalid_command
-  # code invalid_command here
-  puts "Your command was invalid, try again!"
+  puts "Please enter a valid command"
 end
 
-#####################################################
-# get every test to pass before coding runner below #
-#####################################################
+##########
+# runner #
+##########
 
 def runner
   welcome
-  total = initial_round
-  until total > 21
-    current_total = total
-    total = hit?(current_total)
-    break if total == current_total
-    display_card_total(total)
+  card_total = initial_round
+  until card_total > 21
+    card_total = hit?(card_total)
+    display_card_total(card_total)
   end
-  end_game(total)
+  end_game(card_total)
 end
-    
-runner
